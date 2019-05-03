@@ -1,0 +1,60 @@
+<!--INICIO DO CARRINHO-->
+<div class="box box-solid">
+  <div class="box-header">
+    <i class="fa fa-shopping-cart"></i>
+
+    <h3 class="box-title">Carrinho</h3>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+
+    <ng-container *ngIf="!items().length; else elseTemplate">
+   
+        <div><p class="text text-danger text-center">Seu carrinho está vazio!</p></div>      
+    
+    </ng-container>
+    <ng-template #elseTemplate>
+  
+        <div class="table-responsive">
+            <table class="table">
+              <tbody>
+              <tr *ngFor="let item of items()" [@row]="rowState">   <!-- items() é um método no arquivo ts do componente shopping-cart -->
+                <th style="width:60%">
+                  ({{ item.quantity }}x)&nbsp;{{ item.menuItem.price | currency:'BRL': true }}
+                </th>
+                <td class="text-right">
+                  {{ item.value() | currency:'BRL': true }}
+                </td>
+                <td class="text-right">
+                  <a (click)="removeItem(item)" class="btn btn-sm danger"><i class="fa fa-remove"></i></a>
+                </td>
+              </tr>
+             
+              <!--
+              <tr>
+                <th>Frete:</th>
+    
+                <td class="text-right">R$ 8,00</td>
+              </tr>
+            -->
+              <tr>
+                <th>Total:</th>
+    
+                <td class="text-right">{{ total() | currency:'BRL': true }}</td>
+              </tr>
+            </tbody></table>
+          </div>
+
+          <div class="box-footer">
+              <div class="pull-right">
+                <button (click)="clear()" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Limpar</button>
+                <a [routerLink]="[ '/order' ]" class="btn btn-success"><i class="fa fa-credit-card"></i> Fechar Pedido</a>
+              </div>
+            </div>
+          
+    </ng-template>
+    
+  </div>
+
+</div>
+<!-- FIM DO CARRINHO -->

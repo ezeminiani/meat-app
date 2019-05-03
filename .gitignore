@@ -1,8 +1,14 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Created by https://www.gitignore.io/api/angular
+# Edit at https://www.gitignore.io/?templates=angular
+
+### Angular ###
+## Angular ##
 # compiled output
 /dist
 /tmp
+/app/**/*.js
+/app/**/*.js.map
 
 # dependencies
 /node_modules
@@ -10,12 +16,6 @@
 
 # IDEs and editors
 /.idea
-/.vscode
-.project
-.classpath
-.c9/
-*.launch
-.settings/
 
 # misc
 /.sass-cache
@@ -32,4 +32,5 @@ testem.log
 
 #System Files
 .DS_Store
-Thumbs.db
+
+# End of https://www.gitignore.io/api/angular

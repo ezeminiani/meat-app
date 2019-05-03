@@ -1,0 +1,21 @@
+<!--INÍCIO DO MENU -->
+<div class="col-md-9 col-xs-12">
+
+  <!--
+    <mt-menu-item *ngFor="let item of menu |async" 
+  [menuItem]="item" 
+  (add)="addMenuItem($event)"></mt-menu-item>
+  -->
+
+  <mt-menu-item *ngFor="let item of menu |async" 
+  [menuItem]="item" 
+  (add)="shoppingCart.addItem($event)"></mt-menu-item>
+
+  <!-- o evento 'add' está no componente menu-item como um Output EventEmitter -->
+
+</div>
+<div class="col-md-3 col-xs-12">
+  <mt-shopping-cart #shoppingCart></mt-shopping-cart>
+  <!-- usando uma Template Variable para chamar os metodos e eventos -->
+</div>
+<!-- FIM DO MENU -->

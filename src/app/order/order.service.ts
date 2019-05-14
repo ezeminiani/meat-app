@@ -4,7 +4,7 @@ import { CartItem } from 'app/restaurant-detail/shopping-cart/cart-item.model';
 
 import { Order, OrderItem } from './order.model';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions } from '@angular/http'
+import { HttpClient } from '@angular/common/http'
 import 'rxjs/add/operator/map'
 import { MEAT_API } from 'app/app.api';
 
@@ -12,7 +12,7 @@ import { MEAT_API } from 'app/app.api';
 @Injectable()
 export class OrderService {
 
-  constructor(private shoppingCartService: ShoppingCartService, private http: Http) { }
+  constructor(private shoppingCartService: ShoppingCartService, private http: HttpClient) { }
 
   // o parametro shoppingCartService no construtor expoe algumas coisas já fornecidas pelo ShoppingCartService
   // por isso a implementacao desse serviço.
@@ -42,14 +42,9 @@ export class OrderService {
 
   // enviar a order para o backend e retornar um Observable que contem uma string (id da order)
   checkOrder(order: Order): Observable<string> {
-    const headers = new Headers()
-    headers.append("Content-Type", "application/json")
-
-    return this.http.post(`${MEAT_API}/orders`, 
-                          JSON.stringify(order), 
-                          new RequestOptions({headers:headers}))
-                    .map(response => response.json())     // o map transforma o objeto response em json
-                    .map(order => order.id)               // transforma e retorna somente o ID do order
+    return this.http.post<Order>(`${MEAT_API}/orders`, order)
+                    .map(order => order.id)
+                    // transforma e retorna somente o ID do order
   }
 
 

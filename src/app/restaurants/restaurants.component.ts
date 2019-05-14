@@ -5,6 +5,12 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 import 'rxjs/add/operator/switchMap'
+import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/debounceTime'
+import 'rxjs/add/operator/distinctUntilChanged'
+import 'rxjs/add/operator/catch'
+import 'rxjs/add/observable/from'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'mt-restaurants',
@@ -47,7 +53,13 @@ export class RestaurantsComponent implements OnInit {
     //this.searchControl.valueChanges.subscribe(searchTerm => console.log(searchTerm))
     
     // 
-    this.searchControl.valueChanges.switchMap(s => this.restaurantsService.restaurants(s))
+    this.searchControl.valueChanges
+    .debounceTime(500)     // a diferença entre os eventos for menor que 500ms não vai prosseguir com o searchTerm
+    .distinctUntilChanged()    // se for igual ao ultimo digitado não vai prosseguir com o searchTerm
+    //.do(searcTerm => console.log(`q=${searcTerm}`))         // apenas para ver o que acontece
+    .switchMap(searcTerm => this.restaurantsService
+      .restaurants(searcTerm)
+      .catch(error => Observable.from([])))   // caso ocorra erro não quebra, constroi o observable a partir de array vazio
     .subscribe(r => this.restaurants = r)
 
 
@@ -60,14 +72,13 @@ export class RestaurantsComponent implements OnInit {
   }
 
 
-  /*
-  utilizar no html do componente para chamar esse metodo:
-  {{ alerta("Restaurantes localizados.") }}
+  //
+  //utilizar no html do componente para chamar esse metodo:
+  //{{ alerta("Restaurantes localizados.") }}
 
   // metodo que exibe um alerta no templante.
-  alerta(msg: string){
+  //alerta(msg: string){
     //console.log(msg)
-    alert(msg)
-  }
-  */
+ //   alert(msg)
+  //}
 }
